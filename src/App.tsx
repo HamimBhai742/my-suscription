@@ -1,4 +1,4 @@
-import { Check, Sparkles } from "lucide-react";
+import { Check, CloudCog, Sparkles } from "lucide-react";
 import "./App.css";
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
       id: 1,
       name: "Basic",
       price: 10,
+      priceid:'price_1Swg8GAjWpOP8HLuqeCFY6Mx',
       description: "For individuals getting started",
       features: ["Feature 1", "Feature 2"],
       popular: false,
@@ -15,6 +16,8 @@ function App() {
       id: 2,
       name: "Standard",
       price: 20,
+            priceid:'price_1Swg9PAjWpOP8HLuLksO095C',
+
       description: "Perfect for growing teams",
       features: ["Feature 1", "Feature 2", "Feature 3"],
       popular: true,
@@ -22,6 +25,8 @@ function App() {
     {
       id: 3,
       name: "Premium",
+            priceid:'price_1Swg9uAjWpOP8HLuPWLE6N4y',
+
       price: 30,
       description: "Advanced features for scale",
       features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4"],
@@ -29,6 +34,23 @@ function App() {
     },
   ];
 
+  const handelSuscription=async(priceId:string)=>{
+const res=await fetch('http://localhost:5000/api/v1/payments/create-checkout-session',{
+  method:'POST',
+  
+  headers:{
+    'Content-Type':'application/json' ,
+Authorization:`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjI0MGY1My0yMGVlLTQ3MTYtOTA4My1mMjMyMTUwODBhOGMiLCJyb2xlIjoiVVNFUiIsImVtYWlsIjoibWRoYW1pbTMwODhAZ21haWwuY29tIiwiaWF0IjoxNzcwMTEyNjc4LCJleHAiOjE3NzAxOTkwNzh9.3aXg69xR0TO85GGjzEAciS3Jg87BEkMd_rv_e33nyg4`
+  },
+  
+  body:JSON.stringify({priceId})
+})
+const data=await res.json();
+console.log(data);
+if(data?.data?.url){
+  window.location.href=data.data.url
+}
+  }
   return (
     <section className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white py-16 px-4">
       <div className="max-w-7xl mx-auto text-center mb-12">
@@ -75,6 +97,8 @@ function App() {
             </ul>
 
             <button
+
+            onClick={()=>handelSuscription(plan.priceid)}
               className={`w-full py-3 rounded-xl font-medium transition
               ${
                 plan.popular
